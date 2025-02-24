@@ -18,7 +18,10 @@
 		bind:value={newTask}
 		placeholder="Adicionar nova tarefa..."
 	/>
-	<button class="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600" on:click={addTask}>
+	<button
+		class="cursor-pointer rounded-lg bg-cyan-300 px-4 py-2 text-white hover:bg-sky-900"
+		onclick={addTask}
+	>
 		➕
 	</button>
 </div>

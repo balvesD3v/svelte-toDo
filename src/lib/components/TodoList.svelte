@@ -1,16 +1,25 @@
-<script lang="ts">
+<script context="module" lang="ts">
 	import { writable } from 'svelte/store';
 	import TaskInput from './TaskInput.svelte';
 	import TodoItem from './TodoItem.svelte';
 
-	const tasks = writable<string[]>([]);
+	export type Task = {
+		text: string;
+		done: boolean;
+	};
 
-	function addTask(task: string) {
-		tasks.update((t) => [...t, task]);
+	const tasks = writable<Task[]>([]);
+
+	function addTask(taskText: string) {
+		tasks.update((t) => [...t, { text: taskText, done: false }]);
 	}
 
 	function removeTask(index: number) {
 		tasks.update((t) => t.filter((_, i) => i !== index));
+	}
+
+	function toggleTask(index: number) {
+		tasks.update((t) => t.map((task, i) => (i === index ? { ...task, done: !task.done } : task)));
 	}
 </script>
 
@@ -20,8 +29,8 @@
 	<TaskInput onAdd={addTask} />
 
 	<ul class="mt-4 space-y-2">
-		{#each $tasks as task, index}
-			<TodoItem {task} {index} onRemove={removeTask} />
+		{#each $tasks as task: Task, index}
+			<TodoItem {task} {index} onRemove={removeTask} onToggle={toggleTask} />
 		{/each}
 	</ul>
 </div>
